@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\nidla\\Downloads\\junit-jupiter-api-5.13.0.jar"
+    ]
+}
