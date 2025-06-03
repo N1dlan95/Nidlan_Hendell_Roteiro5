@@ -2,17 +2,17 @@ package tad.pilha;
 
 public interface PilhaIF<E> {
 	
-	public void empilhar(E item) throws PilhaCheiaException;
+	 void empilhar(E item) throws PilhaCheiaException;
 	
-	public E desempilhar() throws PilhaVaziaException;
+	 E desempilhar() throws PilhaVaziaException;
 	
-	public E topo();
+	 E topo();
 	
-	public PilhaIF<E> multitop(int k);
+	 PilhaIF<E> multitop(int k) throws PilhaVaziaException, PilhaCheiaException;
 	
-	public boolean isEmpty();
+	 boolean isEmpty();
 
-    public int capacidade();
+     int capacidade();
 
-	public int tamanho();
+	 int tamanho();
 }
