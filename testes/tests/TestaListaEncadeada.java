@@ -81,7 +81,7 @@ public class TestaListaEncadeada {
 	}
 	
 	@Test
-	public void insertsearchTeste() {
+	public void insertsearchTeste() throws ListaVaziaException, ElementoNaoEncontradoException {
 		assertNull(listaEnc.search(20));
 		listaEnc.insert(20);
 		assertEquals(new NodoListaEncadeada<Integer>(20), listaEnc.search(20));
@@ -112,9 +112,9 @@ public class TestaListaEncadeada {
 		assertNull(listaEnc.search(29).getProximo());
 		assertNull(listaEnc.search(230));
 	}
-	
+	//---------------------------------Nao entendi--------------------------------------
 	@Test
-	public void insertRemoverTeste() throws ElementoNaoEncontradoException {
+	public void insertRemoverTeste() throws ElementoNaoEncontradoException, ListaVaziaException {
 		assertThrows(ListaVaziaException.class, () -> {
 			listaEnc.remove(38);
 		});
@@ -194,7 +194,7 @@ public class TestaListaEncadeada {
 	}
 	
 	@Test
-	public void isEmptyTest() throws ElementoNaoEncontradoException {
+	public void isEmptyTest() throws ElementoNaoEncontradoException, ListaVaziaException {
 		assertTrue(listaEnc.isEmpty());
 		listaEnc.insert(206);
 		listaEnc.insert(122);
@@ -216,7 +216,7 @@ public class TestaListaEncadeada {
 	}
 	
 	@Test
-	public void sizeRemoveCabecaTest() throws ElementoNaoEncontradoException {
+	public void sizeRemoveCabecaTest() throws ElementoNaoEncontradoException, ListaVaziaException {
 		assertEquals(0, listaEnc.size());
 		listaEnc.insert(58);
 		assertEquals(1, listaEnc.size());
@@ -273,7 +273,7 @@ public class TestaListaEncadeada {
 	}
 
 	@Test
-	public void inserirNull_QuandoPermitido_DeveFuncionar() {
+	public void inserirNull_QuandoPermitido_DeveFuncionar() throws ListaVaziaException, ElementoNaoEncontradoException {
 		// Assumindo que a lista permite null
 		listaEnc.insert(null);
 		listaEnc.insert(10);
@@ -283,7 +283,7 @@ public class TestaListaEncadeada {
 	}
 
 	@Test
-	public void tamanhoLista_DeveSerConsistente() throws ElementoNaoEncontradoException {
+	public void tamanhoLista_DeveSerConsistente() throws ElementoNaoEncontradoException, ListaVaziaException {
 		assertEquals(0, listaEnc.size());
 		listaEnc.insert(10);
 		assertEquals(1, listaEnc.size());

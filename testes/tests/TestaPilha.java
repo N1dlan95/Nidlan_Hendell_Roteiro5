@@ -138,6 +138,11 @@ public class TestaPilha {
 	    });
 	}
 
+	/**
+	 * Não entendi o que o teste deseja. Eu deveria no meu metodo limitar o retorno da quantidade de topos(interrogação)
+	 *
+	 *
+	 */
 	@Test
 	public void multitop_QuandoSolicitadoMaisElementosQuePilha_DeveRetornarTodosElementos() throws PilhaCheiaException, PilhaVaziaException {
 		pilha.empilhar(3);

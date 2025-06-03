@@ -37,7 +37,7 @@ public class NodoListaEncadeada<T extends Comparable<T>> {
 	}
 	
 	public boolean isNull() {
-		return (chave == null ? true:false);
+		return (chave == null);
 	}
 
 	@Override
@@ -47,12 +47,9 @@ public class NodoListaEncadeada<T extends Comparable<T>> {
 		}
 		@SuppressWarnings("unchecked")
 		NodoListaEncadeada<T> aComparar = ((NodoListaEncadeada<T>) obj);
-		if ( (this.chave.compareTo(aComparar.getChave()) == 0) &&
-				(this.getProximo().equals(aComparar.getProximo())) ) {
-			return true;
-		}
-		return false;
-	}
+        return (this.chave.compareTo(aComparar.getChave()) == 0) &&
+                (this.getProximo().equals(aComparar.getProximo()));
+    }
 
 	@Override
 	public String toString() {

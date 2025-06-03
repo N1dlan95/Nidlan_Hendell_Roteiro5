@@ -263,7 +263,7 @@ public class TestaConjuntoDinamico {
 		}
 	}
 	/**
-	 * Novamente não quero editar os testes, porem nos testes de sucessor e predecessor deseja q seja retornado em ordem,
+	 * Novamente não quero editar os testes, porem nos testes de sucessor e predecessor deseja que seja retornado em ordem,
 	 * ou seja,
 	 *
 	 * aray= [4,5,10,8]

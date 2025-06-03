@@ -1,5 +1,7 @@
 package tad.listasEncadeadas;
 
+import tad.ElementoNaoEncontradoException;
+
 public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadeadaIF<T>{
 	
 //	NodoListaEncadeada<T> cabeca = null;
@@ -16,32 +18,53 @@ public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadea
 
 	@Override
 	public boolean isEmpty() {
-		throw new UnsupportedOperationException("Precisa implementar!");
+		return cabeca.getProximo().equals(cauda);
 		
 	}
 
 	@Override
 	public int size() {
-		throw new UnsupportedOperationException("Precisa implementar!");
+		if(isEmpty()){
+			return 0;
+		}
+		int contador=1;
+		NodoListaEncadeada<T> apontador = cabeca.getProximo();
+
+		while(apontador.getProximo() != cauda) {
+			apontador=apontador.getProximo();
+			contador++;
+		}
+		return contador;
 	}
 
 	@Override
-	public NodoListaEncadeada<T> search(T chave) {
-		throw new UnsupportedOperationException("Precisa implementar!");
+	public NodoListaEncadeada<T> search(T chave){
+		NodoListaEncadeada<T> retorno = cabeca;
+
+		while(retorno.getProximo() != cauda) {
+			if(retorno.getChave() == chave){
+				return retorno;
+			}
+			retorno=retorno.getProximo();
+		}
+
+		return null;
 	}
 
+	/**	Da maneira que compreendi a logica do codigo enviado, cabeça e cauda não tem valores nas suas respectivas chaves,
+	 * assim se tendo valores apenas nos nós entre cabeca e cauda
+	 *
+	 * @author Nidlan hendell
+	 */
 	@Override
 	public void insert(T chave) {
-//		throw new UnsupportedOperationException("Precisa implementar!");
-		
 		//1. Craiar o novo registro
 		NodoListaEncadeada<T> novoNo = new NodoListaEncadeada<T>(chave);
-		
 		//2. Inserir o novo nó na lista
-		
 		// se a lista estiver vazia**
-		if (cabeca.getProximo().equals(cauda)) {
-			cabeca = novoNo;
+		if (isEmpty()) {
+			novoNo.setProximo(cauda);
+			cabeca.setProximo(novoNo);
 		} else { // lista não está vazia
 			novoNo.setProximo(cabeca.getProximo());
 			cabeca.setProximo(novoNo);
@@ -50,18 +73,47 @@ public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadea
 	}
 
 	@Override
-	public NodoListaEncadeada<T> remove(T chave) {
-		throw new UnsupportedOperationException("Precisa implementar!");
-		
+	public NodoListaEncadeada<T> remove(T chave)throws ListaVaziaException, ElementoNaoEncontradoException {
+		if(isEmpty())
+			throw new ListaVaziaException();
+		NodoListaEncadeada<T> apontador = cabeca.getProximo();
+
+		while(apontador.getProximo().getChave() != chave) {
+			if(apontador.getProximo()== cauda) {
+				throw new ElementoNaoEncontradoException();
+			}
+			apontador=apontador.getProximo();
+		}
+		NodoListaEncadeada<T> retorno = apontador.getProximo();
+		apontador.setProximo(apontador.getProximo().getProximo());
+		return retorno;
 	}
 
+	/**Nao
+	 * Criar um array usando a classe utilitária conversor
+	 * Conversor<T> c = new Conversor<T>();
+	 * T[] meuArray = c.gerarArray(clazz, 10);
+	 *
+	 */
 	@Override
 	public T[] toArray(Class<T> clazz) {
-		// Criar um array usando a classe utilitária conversor
-//		Conversor<T> c = new Conversor<T>();
-//		T[] meuArray = c.gerarArray(clazz, 10);
-		throw new UnsupportedOperationException("Precisa implementar!");
+		int tamanho = this.size();
+		int controle = 0;
+
+		Integer[] array = new Integer[tamanho];
+		if(controle == tamanho){
+			return (T[]) array;
+		}
+		NodoListaEncadeada<T> apontador = cabeca.getProximo();
+
+		while(apontador.getProximo() != cauda) {
+			array[controle]= (Integer) apontador.getChave();
+			controle++;
+			apontador=apontador.getProximo();
+		}
+		return (T[]) array;
 	}
+
 
 	@Override
 	public String imprimeEmOrdem() {
@@ -79,7 +131,6 @@ public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadea
 
 	@Override
 	public String imprimeInverso() {
-//		throw new UnsupportedOperationException("Precisa implementar!");
 		
 		String valores = "";
 		NodoListaEncadeada<T> corrente = cabeca.getProximo();
@@ -95,18 +146,37 @@ public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadea
 	}
 
 	@Override
-	public NodoListaEncadeada<T> sucessor(T chave) {
-		throw new UnsupportedOperationException("Precisa implementar!");
+	public NodoListaEncadeada<T> sucessor(T chave) throws ElementoNaoEncontradoException {
+		NodoListaEncadeada<T> retorno = this.search(chave);
+		return retorno.getProximo();
 	}
 
 	@Override
-	public NodoListaEncadeada<T> predecessor(T chave) {
-		throw new UnsupportedOperationException("Precisa implementar!");
+	public NodoListaEncadeada<T> predecessor(T chave) throws ElementoNaoEncontradoException {
+		NodoListaEncadeada<T> apontador = cabeca.getProximo();
+
+		while(apontador.getProximo().getChave() != chave) {
+			if(apontador.getProximo()== cauda) {
+				throw new ElementoNaoEncontradoException();
+			}
+			apontador=apontador.getProximo();
+		}
+		return apontador;
 	}
 
 	@Override
 	public void insert(T chave, int index) {
-		throw new UnsupportedOperationException("Precisa implementar!");
+		//1. Craiar o novo registro
+		NodoListaEncadeada<T> novoNo = new NodoListaEncadeada<T>(chave);
+		//2. Inserir o novo nó na lista
+		// se a lista estiver vazia**
+		if (isEmpty()) {
+			novoNo.setProximo(cauda);
+			cabeca.setProximo(novoNo);
+		} else { // lista não está vazia
+			novoNo.setProximo(cabeca.getProximo());
+			cabeca.setProximo(novoNo);
+		}
 	}
 
 }
