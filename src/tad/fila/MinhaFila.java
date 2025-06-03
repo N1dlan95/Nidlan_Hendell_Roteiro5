@@ -8,7 +8,7 @@ package tad.fila;
  */
 public class MinhaFila implements FilaIF<Integer> {
 	
-	private int tamanho = 10;
+	private int tamanho = 5;
 	
 	private int cauda = 1;
 	private int cabeca = 0;
@@ -108,14 +108,12 @@ public MinhaFila() {
 
 	@Override
 	public int capacidade() {//quantos elementos cabem
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'capacidade'");
+		return this.tamanho;
 	}
 
 	@Override
 	public int tamanho() {// quantos elementos possuem
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'tamanho'");
+		return cauda-1+this.tamanho-(cabeca+this.tamanho);
 	}
 
 
