@@ -1,4 +1,6 @@
 package tad.listasEncadeadas;
+import java.util.Objects;
+
 
 public class NodoListaEncadeada<T extends Comparable<T>> {
 	
@@ -42,14 +44,21 @@ public class NodoListaEncadeada<T extends Comparable<T>> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || this.chave == null) {
+		if (!(obj instanceof NodoListaEncadeada<?>)) {
 			return false;
 		}
+
 		@SuppressWarnings("unchecked")
-		NodoListaEncadeada<T> aComparar = ((NodoListaEncadeada<T>) obj);
-        return (this.chave.compareTo(aComparar.getChave()) == 0) &&
-                (this.getProximo().equals(aComparar.getProximo()));
-    }
+		NodoListaEncadeada<T> aComparar = (NodoListaEncadeada<T>) obj;
+
+		if (this.chave == null || aComparar.getChave() == null) {
+			return false;
+		}
+
+		return this.chave.equals(aComparar.getChave()) &&
+				Objects.equals(this.getProximo(), aComparar.getProximo());
+	}
+
 
 	@Override
 	public String toString() {

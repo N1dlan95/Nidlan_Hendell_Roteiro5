@@ -10,6 +10,8 @@ import tad.listasEncadeadas.ListaDuplamenteEncadeadaIF;
 import tad.listasEncadeadas.ListaDuplamenteEncadeadaImpl;
 import tad.listasEncadeadas.ListaVaziaException;
 import tad.listasEncadeadas.NodoListaDuplamenteEncadeada;
+import tad.pilha.PilhaCheiaException;
+import tad.pilha.PilhaVaziaException;
 
 
 public class TestaListaDuplamenteEncadeada {
@@ -62,7 +64,7 @@ public class TestaListaDuplamenteEncadeada {
 	}
 	
 	@Test
-	public void imprimeInversoTest() {
+	public void imprimeInversoTest() throws PilhaCheiaException, PilhaVaziaException {
 		assertEquals("", listaDuplaEnc.imprimeInverso());
 		listaDuplaEnc.insert(2);
 		assertEquals("2", listaDuplaEnc.imprimeInverso());

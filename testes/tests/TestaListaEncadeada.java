@@ -9,6 +9,9 @@ import tad.listasEncadeadas.NodoListaEncadeada;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tad.pilha.PilhaCheiaException;
+import tad.pilha.PilhaVaziaException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -62,7 +65,7 @@ public class TestaListaEncadeada {
 	}
 	
 	@Test
-	public void imprimeInversoTest() {
+	public void imprimeInversoTest() throws PilhaCheiaException, PilhaVaziaException {
 		assertEquals("", listaEnc.imprimeInverso());
 		listaEnc.insert(2);
 		assertEquals("2", listaEnc.imprimeInverso());
@@ -112,7 +115,6 @@ public class TestaListaEncadeada {
 		assertNull(listaEnc.search(29).getProximo());
 		assertNull(listaEnc.search(230));
 	}
-	//---------------------------------Nao entendi--------------------------------------
 	@Test
 	public void insertRemoverTeste() throws ElementoNaoEncontradoException, ListaVaziaException {
 		assertThrows(ListaVaziaException.class, () -> {
@@ -263,7 +265,7 @@ public class TestaListaEncadeada {
 	}
 
 	@Test
-	public void listaComValoresExtremos_DeveManterIntegridade() {
+	public void listaComValoresExtremos_DeveManterIntegridade() throws PilhaCheiaException, PilhaVaziaException {
 		listaEnc.insert(Integer.MIN_VALUE);
 		listaEnc.insert(0);
 		listaEnc.insert(Integer.MAX_VALUE);

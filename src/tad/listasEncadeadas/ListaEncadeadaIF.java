@@ -1,6 +1,8 @@
 package tad.listasEncadeadas;
 
 import tad.ElementoNaoEncontradoException;
+import tad.pilha.PilhaCheiaException;
+import tad.pilha.PilhaVaziaException;
 
 public interface ListaEncadeadaIF<T extends Comparable<T>> {
 	
@@ -23,7 +25,7 @@ public interface ListaEncadeadaIF<T extends Comparable<T>> {
 	 * deve ser inversa a que foram inseridos
 	 * @return String com o conjunto das chaves inseridas em ordem inversa.
 	 */
-	public String imprimeInverso();
+	public String imprimeInverso() throws PilhaCheiaException, PilhaVaziaException;
 	public NodoListaEncadeada<T> sucessor(T chave) throws ElementoNaoEncontradoException;
 	public NodoListaEncadeada<T> predecessor(T chave) throws ElementoNaoEncontradoException;
 	/**

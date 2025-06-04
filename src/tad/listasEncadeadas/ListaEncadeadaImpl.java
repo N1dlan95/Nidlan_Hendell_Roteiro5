@@ -1,6 +1,10 @@
 package tad.listasEncadeadas;
 
 import tad.ElementoNaoEncontradoException;
+import java.lang.reflect.Array;
+import tad.pilha.MinhaPilha;
+import tad.pilha.PilhaCheiaException;
+import tad.pilha.PilhaVaziaException;
 
 public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadeadaIF<T>{
 	
@@ -18,7 +22,7 @@ public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadea
 
 	@Override
 	public boolean isEmpty() {
-		return cabeca.getProximo().equals(cauda);
+		return cabeca.getProximo()==cauda;
 		
 	}
 
@@ -41,7 +45,7 @@ public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadea
 	public NodoListaEncadeada<T> search(T chave){
 		NodoListaEncadeada<T> retorno = cabeca;
 
-		while(retorno.getProximo() != cauda) {
+		while(retorno != null && retorno != cauda) {
 			if(retorno.getChave() == chave){
 				return retorno;
 			}
@@ -66,33 +70,38 @@ public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadea
 			novoNo.setProximo(cauda);
 			cabeca.setProximo(novoNo);
 		} else { // lista não está vazia
-			novoNo.setProximo(cabeca.getProximo());
-			cabeca.setProximo(novoNo);
+			NodoListaEncadeada<T> apontador = cabeca;
+			while (apontador.getProximo() != null && apontador.getProximo() != cauda) {
+
+				apontador=apontador.getProximo();
+				}
+			novoNo.setProximo(cauda);
+			apontador.setProximo(novoNo);
 		}
 		
 	}
 
-	@Override
-	public NodoListaEncadeada<T> remove(T chave)throws ListaVaziaException, ElementoNaoEncontradoException {
-		if(isEmpty())
-			throw new ListaVaziaException();
-		NodoListaEncadeada<T> apontador = cabeca.getProximo();
 
-		while(apontador.getProximo().getChave() != chave) {
-			if(apontador.getProximo()== cauda) {
-				throw new ElementoNaoEncontradoException();
-			}
-			apontador=apontador.getProximo();
+	public NodoListaEncadeada<T> remove(T chave) throws ListaVaziaException, ElementoNaoEncontradoException {
+		if (isEmpty()) {
+			throw new ListaVaziaException();
 		}
-		NodoListaEncadeada<T> retorno = apontador.getProximo();
-		apontador.setProximo(apontador.getProximo().getProximo());
-		return retorno;
+		NodoListaEncadeada<T> apontador = cabeca;
+		while (apontador.getProximo() != null && apontador.getProximo() != cauda) {
+			if (apontador.getProximo().getChave().equals(chave)) {
+
+				apontador.setProximo(apontador.getProximo().getProximo());
+				return apontador.getProximo();
+			}
+			apontador = apontador.getProximo();
+		}
+
+		throw new ElementoNaoEncontradoException();
 	}
 
-	/**Nao
-	 * Criar um array usando a classe utilitária conversor
-	 * Conversor<T> c = new Conversor<T>();
-	 * T[] meuArray = c.gerarArray(clazz, 10);
+
+	/**Nao soube implementar este metodo, peguei da internet
+	 *
 	 *
 	 */
 	@Override
@@ -100,68 +109,78 @@ public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadea
 		int tamanho = this.size();
 		int controle = 0;
 
-		Integer[] array = new Integer[tamanho];
-		if(controle == tamanho){
-			return (T[]) array;
-		}
+		@SuppressWarnings("unchecked")
+		T[] array = (T[]) Array.newInstance(clazz, tamanho);
+
 		NodoListaEncadeada<T> apontador = cabeca.getProximo();
 
-		while(apontador.getProximo() != cauda) {
-			array[controle]= (Integer) apontador.getChave();
+		while (apontador != null && apontador != cauda) {
+			array[controle] = clazz.cast(apontador.getChave()); // Cast seguro
 			controle++;
-			apontador=apontador.getProximo();
+			apontador = apontador.getProximo();
 		}
-		return (T[]) array;
+
+		return array;
 	}
 
 
 	@Override
 	public String imprimeEmOrdem() {
-//		throw new UnsupportedOperationException("Precisa implementar!");
 		String valores = "";
 		NodoListaEncadeada<T> corrente = cabeca.getProximo();
-		
-		while (!corrente.equals(cauda)) {
+
+		while (corrente != null && corrente != cauda) {
 			valores += corrente.getChave() + ", ";
+			corrente = corrente.getProximo();
 		}
-		
-		return valores.substring(0, valores.length()-2);
-		
+
+		return valores.isEmpty() ? "" : valores.substring(0, valores.length() - 2);
 	}
 
+
 	@Override
-	public String imprimeInverso() {
-		
+	public String imprimeInverso() throws PilhaCheiaException, PilhaVaziaException {
+
 		String valores = "";
 		NodoListaEncadeada<T> corrente = cabeca.getProximo();
 		NodoListaEncadeada<T> anterior = cabeca;
-		
-		while (!corrente.equals(cauda)) {
-			valores += corrente.getChave() + ", ";
+		MinhaPilha pilha = new MinhaPilha(this.size());
+		if (isEmpty()) return "";
+
+		while (corrente!=null && !corrente.getProximo().equals(cauda)) {
+			pilha.empilhar((Integer) corrente.getChave());
+			corrente = corrente.getProximo();
 		}
-		
-		
+		while(!pilha.isEmpty()){
+			valores += pilha.desempilhar() + ", ";
+		}
 		return valores.substring(0, valores.length()-2);
-		
+
 	}
 
 	@Override
 	public NodoListaEncadeada<T> sucessor(T chave) throws ElementoNaoEncontradoException {
-		NodoListaEncadeada<T> retorno = this.search(chave);
-		return retorno.getProximo();
+		NodoListaEncadeada<T> retorno = cabeca;
+		while(retorno != null && retorno != cauda) {
+			if(retorno.getChave() == chave){
+				return retorno.getProximo();
+			}
+			retorno=retorno.getProximo();
+		}
+			throw new ElementoNaoEncontradoException();
 	}
 
 	@Override
 	public NodoListaEncadeada<T> predecessor(T chave) throws ElementoNaoEncontradoException {
 		NodoListaEncadeada<T> apontador = cabeca.getProximo();
 
-		while(apontador.getProximo().getChave() != chave) {
-			if(apontador.getProximo()== cauda) {
-				throw new ElementoNaoEncontradoException();
+		while(apontador.getProximo() != null && apontador.getProximo()!=cauda) {
+			if(apontador.getProximo().getChave() == chave) {
+				return apontador;
 			}
 			apontador=apontador.getProximo();
 		}
-		return apontador;
+		throw new ElementoNaoEncontradoException();
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package tad.listasEncadeadas;
 public class NodoListaDuplamenteEncadeada<T extends Comparable<T>> extends NodoListaEncadeada<T>{
 	
 	private NodoListaDuplamenteEncadeada<T> anterior;
+
 	
 	public NodoListaDuplamenteEncadeada(T chave) {
 		super(chave);
