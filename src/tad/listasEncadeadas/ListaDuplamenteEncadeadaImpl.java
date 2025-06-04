@@ -1,10 +1,9 @@
 package tad.listasEncadeadas;
 
+import tad.ElementoNaoEncontradoException;
+
 public class ListaDuplamenteEncadeadaImpl<T extends Comparable<T>> implements ListaDuplamenteEncadeadaIF<T> {
-	
-	//TODO: implementar o nó cabeça
-	//TODO: implementar o nó cauda 
-	//TODO: implementar as sentinelas
+
 	
 	NodoListaDuplamenteEncadeada<T> cabeca = null; // Estratégia usando marcação sentinela
 	NodoListaDuplamenteEncadeada<T> cauda = null;// Estratégia usando marcação sentinela
@@ -17,12 +16,13 @@ public class ListaDuplamenteEncadeadaImpl<T extends Comparable<T>> implements Li
 		// lista circular
 		cabeca.setAnterior(cauda);
 		cauda.setAnterior(cabeca);
+		cabeca.setProximo(cauda);
+		cauda.setProximo(cabeca);
 		
 	}
 
 	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
+	public boolean isEmpty() {// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -42,20 +42,28 @@ public class ListaDuplamenteEncadeadaImpl<T extends Comparable<T>> implements Li
 	public void insert(T chave) {
 		//1. Craiar o novo registro
 		NodoListaDuplamenteEncadeada<T> novoNo = new NodoListaDuplamenteEncadeada<T>(chave);
-		
-		//2. Inserir o novo nó na lista
-		
-		novoNo.setProximo(cabeca.getProximo());
-		((NodoListaDuplamenteEncadeada<T>) cabeca.getProximo()).setAnterior(novoNo);
-		novoNo.setAnterior(cabeca);
-		cabeca.setProximo(novoNo);
-			
+		if(isEmpty()) {
+			novoNo.setProximo(cabeca.getProximo());
+			((NodoListaDuplamenteEncadeada<T>) cabeca.getProximo()).setAnterior(novoNo);
+			novoNo.setAnterior(cabeca);
+			cabeca.setProximo(novoNo);
+		}else{
+			NodoListaDuplamenteEncadeada<T> apontador = cabeca;
+			while(apontador.getProximo() != cauda) {
+
+				apontador= (NodoListaDuplamenteEncadeada) apontador.getProximo();
+			}
+			cauda.setAnterior(novoNo);
+			apontador.setProximo(novoNo);
+			novoNo.setAnterior(apontador);
+			novoNo.setProximo(cauda);
+		}
 		
 	}
 
 	@Override
-	public NodoListaDuplamenteEncadeada remove(T chave) {
-		// TODO Auto-generated method stub
+	public NodoListaDuplamenteEncadeada remove(T chave)throws ElementoNaoEncontradoException {
+
 		return null;
 	}
 

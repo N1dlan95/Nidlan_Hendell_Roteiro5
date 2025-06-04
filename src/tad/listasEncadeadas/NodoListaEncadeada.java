@@ -51,13 +51,9 @@ public class NodoListaEncadeada<T extends Comparable<T>> {
 		@SuppressWarnings("unchecked")
 		NodoListaEncadeada<T> aComparar = (NodoListaEncadeada<T>) obj;
 
-		if (this.chave == null || aComparar.getChave() == null) {
-			return false;
-		}
-
-		return this.chave.equals(aComparar.getChave()) &&
-				Objects.equals(this.getProximo(), aComparar.getProximo());
+		return Objects.equals(this.chave, aComparar.getChave());
 	}
+
 
 
 	@Override

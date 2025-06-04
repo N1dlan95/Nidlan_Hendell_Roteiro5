@@ -5,7 +5,6 @@ import tad.fila.FilaIF;
 import tad.fila.FilaVaziaException;
 
 public class FilaListaEncadeada implements FilaIF<NodoListaEncadeada<Integer>> {
-	
 	private ListaEncadeadaIF<Integer> fila;
 
 	@Override

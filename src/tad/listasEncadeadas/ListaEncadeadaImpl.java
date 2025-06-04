@@ -90,8 +90,9 @@ public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadea
 		while (apontador.getProximo() != null && apontador.getProximo() != cauda) {
 			if (apontador.getProximo().getChave().equals(chave)) {
 
-				apontador.setProximo(apontador.getProximo().getProximo());
-				return apontador.getProximo();
+				NodoListaEncadeada<T> retorno = apontador.getProximo();
+				apontador.setProximo(retorno.getProximo());
+				return retorno;
 			}
 			apontador = apontador.getProximo();
 		}
@@ -147,15 +148,14 @@ public class ListaEncadeadaImpl<T extends Comparable<T>> implements ListaEncadea
 		MinhaPilha pilha = new MinhaPilha(this.size());
 		if (isEmpty()) return "";
 
-		while (corrente!=null && !corrente.getProximo().equals(cauda)) {
+		while (corrente!=null && !corrente.equals(cauda)) {
 			pilha.empilhar((Integer) corrente.getChave());
 			corrente = corrente.getProximo();
 		}
 		while(!pilha.isEmpty()){
 			valores += pilha.desempilhar() + ", ";
 		}
-		return valores.substring(0, valores.length()-2);
-
+			return valores.substring(0, valores.length()-2);
 	}
 
 	@Override
