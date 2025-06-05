@@ -1,120 +1,128 @@
 package tad.fila;
 
 /**
- * Fila deve ser implementada com array fixo e estratégia circular
- * de gerenciamento de apontadores de cauda e cabeça.
- * @author fabioleite
- *
+ * Implementação de uma fila utilizando um array fixo com estratégia circular.
+ * Os ponteiros de cabeça e cauda ajudam a gerenciar os elementos dentro do espaço limitado do array.
  */
 public class MinhaFila implements FilaIF<Integer> {
-	
-	private int tamanho = 5;
-	
-	private int cauda = 1;
-	private int cabeca = 0;
-	
+
+	private int tamanho = 5; // Tamanho padrão da fila
+	private int cauda = 1; // Aponta para onde o próximo elemento será inserido
+	private int cabeca = 0; // Aponta para o primeiro elemento da fila
 	private Integer[] meusDados = null;
-/**
- * 	Construtores que inicializam o conjunto
- * @author Nidlan Hendell
- */
-public MinhaFila(int tamanhoInicial) {
-    this.tamanho = tamanhoInicial;
-    this.meusDados = new Integer[tamanhoInicial];
-}
 
-public MinhaFila() {
-    this.meusDados = new Integer[tamanho];
-}
-
-
-	@Override
-	public void enfileirar(Integer item) throws FilaCheiaException{
-		if (isFull()) {
-			throw new FilaCheiaException();
-
-		}else{
-			this.meusDados[this.cauda-1]=item;
-			this.cauda++;
-		}
-		if(this.cauda>this.tamanho){//Caso a cauda chegue no limite do array, mas
-								//se tiver campos vazios antes da cabeça, acauda apontara para la
-			this.cauda -= this.tamanho;
-		}
-		
+	/**
+	 * Construtor que permite definir um tamanho inicial para a fila.
+	 * @param tamanhoInicial Tamanho do array que armazenará os elementos da fila.
+	 */
+	public MinhaFila(int tamanhoInicial) {
+		this.tamanho = tamanhoInicial;
+		this.meusDados = new Integer[tamanhoInicial];
 	}
 
+	/**
+	 * Construtor padrão que usa o tamanho definido na classe.
+	 */
+	public MinhaFila() {
+		this.meusDados = new Integer[tamanho];
+	}
+
+	/**
+	 * Adiciona um novo elemento à fila.
+	 * Se a fila estiver cheia, lança uma exceção.
+	 * Se atingir o final do array, a cauda é ajustada para a primeira posição disponível antes da cabeça.
+	 * @param item Elemento a ser enfileirado.
+	 * @throws FilaCheiaException Se a fila já estiver cheia.
+	 */
 	@Override
-	public Integer desenfileirar()throws FilaVaziaException {
+	public void enfileirar(Integer item) throws FilaCheiaException {
+		if (isFull()) {
+			throw new FilaCheiaException();
+		} else {
+			this.meusDados[this.cauda - 1] = item;
+			this.cauda++;
+		}
+		if (this.cauda > this.tamanho) { // Se a cauda ultrapassar o tamanho do array, reinicia no começo
+			this.cauda -= this.tamanho;
+		}
+	}
+
+	/**
+	 * Remove e retorna o primeiro elemento da fila.
+	 * Se a fila estiver vazia, lança uma exceção.
+	 * @return O elemento removido.
+	 * @throws FilaVaziaException Se a fila estiver vazia.
+	 */
+	@Override
+	public Integer desenfileirar() throws FilaVaziaException {
 		if (isEmpty()) {
 			throw new FilaVaziaException();
 		}
-			Integer auxiliar = this.meusDados[this.cabeca];
-			this.meusDados[this.cabeca]=null;
-			cabeca ++;
-			
-		if(this.cabeca>this.tamanho){//Caso a cabeca chegue no limite do array
-			this.cabeca-= this.tamanho;
+		Integer auxiliar = this.meusDados[this.cabeca];
+		this.meusDados[this.cabeca] = null;
+		cabeca++;
+
+		if (this.cabeca > this.tamanho) { // Se a cabeça ultrapassar o tamanho do array, reinicia no começo
+			this.cabeca -= this.tamanho;
 		}
-		
+
 		return auxiliar;
 	}
 
+	/**
+	 * Retorna o último elemento da fila.
+	 * @return Elemento na cauda da fila.
+	 */
 	@Override
 	public Integer verificarCauda() {
-		return this.meusDados[this.cauda-1];
+		return this.meusDados[this.cauda - 1];
 	}
 
+	/**
+	 * Retorna o primeiro elemento da fila.
+	 * @return Elemento na cabeça da fila.
+	 */
 	@Override
 	public Integer verificarCabeca() {
 		return this.meusDados[this.cabeca];
 	}
 
 	/**
- * isEmpty e isFull seguem a mesma logica, ambos verificam nos apontadores se contem elementos
- * Ex: _ _ _ _ _ 
- * 	   0 1 2 3 4
- * cauda = 1
- * cabeca = 0 
- * 
- * Ao adicionar 3 elementos, 4,1 e 7, remover 1 e adcionar mais 3, 6,2,8
- *     8 1 7 6 2 
- * 	   0 1 2 3 4
- * cauda = 2
- * cabeca = 1
- * 
- * if(2-1==1 && (this.meusDados[1]==null(1) && this.meusDados[cauda]==null(7))){
-			return true;
-		}
- * @author Nidlan Hendell
- *
- */
+	 * Verifica se a fila está vazia.
+	 * A lógica compara os ponteiros de cabeça e cauda e verifica se há elementos.
+	 * @return True se a fila estiver vazia, false caso contrário.
+	 */
 	@Override
 	public boolean isEmpty() {
-		if(cauda-cabeca==1 && (this.meusDados[cabeca]==null && this.meusDados[cauda]==null)){
-			return true;
-		}
-		return false;
+		return cauda - cabeca == 1 && (this.meusDados[cabeca] == null && this.meusDados[cauda] == null);
 	}
 
-	
+	/**
+	 * Verifica se a fila está cheia.
+	 * A lógica compara os ponteiros de cabeça e cauda e verifica se todos os espaços estão ocupados.
+	 * @return True se a fila estiver cheia, false caso contrário.
+	 */
 	@Override
 	public boolean isFull() {
-		if(cauda-cabeca==1 && (this.meusDados[cabeca]!=null && this.meusDados[cauda]!=null)){
-			return true;
-		}
-		return false;
+		return cauda - cabeca == 1 && (this.meusDados[cabeca] != null && this.meusDados[cauda] != null);
 	}
 
+	/**
+	 * Retorna a capacidade total da fila (quantos elementos cabem no array).
+	 * @return Número máximo de elementos suportados.
+	 */
 	@Override
-	public int capacidade() {//quantos elementos cabem
+	public int capacidade() {
 		return this.tamanho;
 	}
 
+	/**
+	 * Retorna o número atual de elementos na fila.
+	 * A lógica utiliza os ponteiros para determinar quantos elementos foram enfileirados e desenfileirados.
+	 * @return Quantidade de elementos armazenados na fila.
+	 */
 	@Override
-	public int tamanho() {// quantos elementos possuem
-		return cauda-1+this.tamanho-(cabeca+this.tamanho);
+	public int tamanho() {
+		return cauda - 1 + this.tamanho - (cabeca + this.tamanho);
 	}
-
-
 }
